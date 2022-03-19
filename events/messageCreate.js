@@ -5,14 +5,14 @@ client.on('messageCreate', async (message) => {
     if (
         message.author.bot ||
         !message.guild ||
-        !client.config.prefix.reduce((a, b) => (a = a || message.content.startsWith(b)), false)
+        !client.config.prefix.reduce((a, b) => (a = a || message.content.toLowerCase().startsWith(b)), false)
     )
         return;
 
     const [cmd, ...args] = message.content
         .slice(
             client.config.prefix
-                .filter((x) => message.content.startsWith(x))
+                .filter((x) => message.content.toLowerCase().startsWith(x))
                 .reduce((a, b) => (b.length > a.length ? b : a), '').length
         )
         .trim()
