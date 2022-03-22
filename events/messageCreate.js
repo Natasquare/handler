@@ -2,6 +2,7 @@ const client = require('../index');
 const ms = require('ms');
 
 client.on('messageCreate', async (message) => {
+    Array.isArray(client.config.prefix) ? null : client.config.prefix = [client.config.prefix];
     if (
         message.author.bot ||
         !message.guild ||
