@@ -1,16 +1,13 @@
-const { glob } = require('glob');
-const { promisify } = require('util');
-const sync = promisify(glob);
+const { sync } = require('glob');
 require('colors');
 const b = '|---------------------------------------------------------------|';
 const s = (n, v) => ' '.repeat(n - v.length);
 
 module.exports = async (client) => {
     const start = Date.now();
-    const commandFiles = await sync(`./commands/**/*.js`);
-    commandFiles.map((value) => {
-        console.log(b);
-        console.log(`|  Walking in ${value.underline}${s(50, value)}|`);
+    const commands = sync(`./commands/**/*.js`);
+    commands.map((value) => {
+        console.log(b, `\n|  Walking in ${value.underline}${s(50, value)}|`);
 
         try {
             const file = require(value);
@@ -26,17 +23,15 @@ module.exports = async (client) => {
             }
         } catch (err) {
             console.log(
-                `|  ${'Failed to load the command above:'.red}                  |`
+                `|  ${'Failed to load the command above:\n'.red}                  |`, err
             );
-            console.error(err);
         }
     });
 
-    console.log(b);
     console.log(
-        `Successfully loaded ${client.commands.size} commands in ${Date.now() - start}ms (${commandFiles.length - client.commands.size} failed)`
+        b, `\nSuccessfully loaded ${client.commands.size} commands in ${Date.now() - start}ms`
     );
 
-    const events = await sync(`./events/*.js`);
-    events.map((x) => require(x));
+    const events = sync(`./events/*.js`);
+    events.map((x) => require(x)(client));
 };

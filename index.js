@@ -5,5 +5,3 @@ client.cd = new Collection();
 client.config = require('./config.js');
 require('./handler.js')(client);
 client.login(client.config.token);
-
-module.exports = client;

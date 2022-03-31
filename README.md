@@ -1,4 +1,5 @@
-# Discord.js v13 command handler
+## Discord.js v13 command handler
+Now less cursed
 
 ### How to use
 

@@ -1,5 +1,3 @@
-const client = require('../index');
-
-client.on('ready', () => {
-    console.log("I'm ready!");
+module.exports = (client) => client.on('ready', () => {
+    console.log(`Ready on ${client.user.tag}`);
 });
