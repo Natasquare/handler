@@ -1,5 +1,5 @@
 ## Discord.js v13 command handler
-Now less cursed
+Revamped edition™️
 
 ### How to use
 
@@ -9,8 +9,8 @@ Now less cursed
 ### Features
 
 - Multiple prefixes
-- Built-in cooldown system
-- Uhhh very cool console stuffs
+- Reloading function
+- That's all, you should appriciate this smh
 
 ### Notes
 

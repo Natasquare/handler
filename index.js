@@ -1,7 +1,13 @@
-const { Client, Collection } = require('discord.js');
-const client = new Client(require('./options.js'));
-client.commands = new Collection();
-client.cd = new Collection();
+const {Client} = require('discord.js'),
+    Handler = require('./handler'),
+    client = new Client(require('./options'));
 client.config = require('./config.js');
-require('./handler.js')(client);
+client.handler = new Handler(client).load('./commands/**/*.js', './events/**/*.js');
+// client.handler = new Handler(client).load(client.config.paths.commands, client.config.paths.events);
 client.login(client.config.token);
+
+/*
+the Handler#load method can also be used as a reload function
+eg. client.handler.load('abc', undefined, true);
+this will reload commands and return a string output
+*/
