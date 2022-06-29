@@ -9,7 +9,7 @@ module.exports = {
         const prefix = [].concat(client.config.prefix).map((x) => x.toLowerCase());
         if (message.author.bot || !prefix.some((x) => message.content.toLowerCase().startsWith(x))) return;
         const [cmd, ...args] = message.content
-                .slice(prefix.reduce((a, b) => (message.content.startsWith(b) && b.length > a.length ? b : a), '').length)
+                .slice(prefix.reduce((a, b) => (message.content.toLowerCase().startsWith(b) && b.length > a.length ? b : a), '').length)
                 .trim()
                 .split(' '),
             command = client.commands.get(cmd.toLowerCase()) || client.commands.find((c) => [].concat(c.aliases).includes(cmd.toLowerCase()));
