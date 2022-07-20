@@ -21,36 +21,38 @@ module.exports = class Handler {
             res = [],
             l = string ? [].push.bind(res) : console.log;
         l('Loading commands...');
-        cpath && sync(cpath).map((path) => {
-            l(`|  Walking in ${path}`);
-            try {
-                delete require.cache[require.resolve(path)];
-                const file = require(path),
-                    directory = path.split('/').slice(-2, -1)[0];
-                [].concat(file).forEach(() => {
-                    this.client.commands.set(file.name, {directory, ...file});
-                    l(`|  Command ${file.name} has been loaded`);
-                });
-            } catch (err) {
-                l(`|  ${'Failed to load the command above:'}`, err.message);
-            }
-        });
+        cpath &&
+            sync(cpath).map((path) => {
+                l(`|  Walking in ${path}`);
+                try {
+                    delete require.cache[require.resolve(path)];
+                    const file = require(path),
+                        directory = path.split('/').slice(-2, -1)[0];
+                    [].concat(file).forEach(() => {
+                        this.client.commands.set((file.slash ? file.data : file).name, {directory, ...file});
+                        l(`|  ${file.slash ? 'Slash c' : 'C'}ommand ${(file.slash ? file.data : file).name} has been loaded`);
+                    });
+                } catch (err) {
+                    l(`|  ${'Failed to load the command above:'}`, err.message);
+                }
+            });
         l(`Loaded ${this.client.commands.size} commands in ${Date.now() - start}ms\nLoading events...`);
         start = Date.now();
         const old = Object.keys(this.client._events).length;
-        epath && sync(epath).map((path) => {
-            l(`|  Walking in ${path}`);
-            try {
-                delete require.cache[require.resolve(path)];
-                const file = require(path);
-                [].concat(file).forEach((event) => {
-                    this.client.on(event.name, (...a) => event.execute(this.client, ...a));
-                    l(`|  Event ${event.name} has been loaded`);
-                });
-            } catch (err) {
-                l(`|  ${'Failed to load the event above:'}`, err.message);
-            }
-        });
+        epath &&
+            sync(epath).map((path) => {
+                l(`|  Walking in ${path}`);
+                try {
+                    delete require.cache[require.resolve(path)];
+                    const file = require(path);
+                    [].concat(file).forEach((event) => {
+                        this.client.on(event.name, (...a) => event.execute(this.client, ...a));
+                        l(`|  Event ${event.name} has been loaded`);
+                    });
+                } catch (err) {
+                    l(`|  ${'Failed to load the event above:'}`, err.message);
+                }
+            });
         l(`Loaded ${Object.keys(this.client._events).length - old} events in ${Date.now() - start}ms`);
         return string ? res.join('\n') : this;
     }

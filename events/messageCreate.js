@@ -15,7 +15,8 @@ module.exports = {
             command = client.commands.get(cmd.toLowerCase()) || client.commands.find((c) => [].concat(c.aliases).includes(cmd.toLowerCase()));
         if (!command) return;
         if (command.ownerOnly && ![].concat(client.config.owner).includes(message.author.id)) return message.channel.send('This is an owner-only command.');
-        if (command.permissions && !message.member.permissions.has(command.permissions)) return message.channel.send('You do not have the required permissions: ' + [].concat(command.permissions).join(', '));
+        if (command.permissions && !message.member.permissions.has(command.permissions))
+            return message.channel.send('You do not have the required permissions: ' + [].concat(command.permissions).join(', '));
         try {
             await command.run(client, message, args);
         } catch (error) {
